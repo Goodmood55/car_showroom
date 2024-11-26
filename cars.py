@@ -1,25 +1,8 @@
-# sort() մեթոդի օգնությամ դասավորությունը լինմ է այբենական կարգով
-'''cars = ['bmw', 'audi',  'toyota', 'subaru', ]
-cars.sort()
-print(cars)'''
+#Программа автосалон
 
-# sort(reverse=True) հակառակ
-'''cars = ['bmw', 'audi',  'toyota', 'subaru', ]
-cars.sort(reverse=True)
-print(cars)'''
+#время открытия / закрытия автосалона
+#количество автомобилей в салоне 5
+#каждый автомобиль обладает: марка, модель, цвет, год выпуска, цена
+#покупка автомобиля из салона
+#расчет количества лет, месяцев, дней, для оплаты авто (10% от з\п в месяцах))
 
-# sorted() ժամանակաոր սոռտավորում։ Պահապնում է նախնական հաջորդականությունը
-'''cars = ['bmw', 'audi',  'toyota', 'subaru' ]
-print('Here is the original list:')
-print(cars)
-
-print("\nHere is the list of cars:")
-print(sorted(cars))
-
-print("\nHere is the original list again:")
-print(cars)'''
-# sorted(reverse=True) այս կերպով նույն պես կարելի է սոռտավորել հակառակ այբենական կարգի ժամանակաորապես
-
-# այս դեպքում ցուցակի երկարությունը len()
-cars = ['bmw', 'audi',  'toyota', 'subaru' ]
-print(len(cars))

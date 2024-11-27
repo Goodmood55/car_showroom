@@ -10,6 +10,7 @@ from typing import Dict, Union, List
 #TODO: покупка автомобиля из салона
 #TODO: расчет количества лет, месяцев, дней, для оплаты авто (10% от з\п в месяцах)
 
+# каком виде отображает дату
 TODAY = datetime.today()
 DAYS_IN_DIGIT_DICT = {1: 'monday', 2: 'tuesday', 3: 'wednesday', 4: 'thursday', 5: 'friday'}
 
@@ -21,9 +22,13 @@ def is_work_time(day_time: Dict[str, Union[List[int], List[str]]]) -> bool:
         return True
     else:
         return False
+
+
 def get_key_by_value(data: Dict[int, str], value: str) -> Union[int, None]:
     return next((k for k, v in data.items() if v == value), None)
 
+
+#что такое def __init__ ?
 class Car:
     def __init__(self, brand, model, color, year, price):
         self.brand: str = brand
@@ -32,6 +37,7 @@ class Car:
         self.year: int = year
         self.price: float = price
 
+#__instance: 'CarSalon' = None то такое Singleton
 class CarSalon:
     __instance: 'CarSalon' = None
     def __init__(self, work: Dict[str, Union[List[str], List[int]]], cars: List[Car]) -> None:
@@ -42,8 +48,7 @@ class CarSalon:
 
         self.__post_init__(work, cars)  # Вызов метода __post_init__
 
-
-
+    #что такое @staticmethod ?
     @staticmethod
     def string_days_to_int_days(work: Dict[str, Union[List[str], List[int]]]) -> None:
         new_days = []
@@ -58,23 +63,27 @@ class CarSalon:
         self.string_days_to_int_days(work)
         self.car_count = len(cars)
 
-
+    # Step 2
+    # что такое @classmethod ?
     @classmethod
     def open(cls):
         print('Добро пожаловать в автосалон Тигран и Ко!')
         print()
         print(car_salon.show_cars())
 
-
+    # Step 3
+    #знать что такое self
     def show_cars(self) -> None:
         print(f'В салоне есть {self.car_count} машин.')
         print('Вашему вниманию представлены следующие автомобили:')
         for car in self.cars:
             print(f'Марка: {car.brand}, Модель: {car.model}, Цвет: {car.color}, Год выпуска: {car.year}, Цена: {car.price} y.e.')
 
+
+#Step 0
 #создаем экземпляр объекта класса CarSalon
-car_salon = CarSalon(work={'days': ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
-                           'time': [9, 20]
+car_salon = CarSalon(work={'days': ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'], #рабочий день недели
+                           'time': [9, 20] #рабочее время от и до
                            },
                      cars=[Car('Toyota', 'Camry','red', 2015, 10000),
                                        Car('Honda', 'Accord', 'blue', 2017, 15000),
@@ -83,8 +92,9 @@ car_salon = CarSalon(work={'days': ['monday', 'tuesday', 'wednesday', 'thursday'
                                        Car('BMW', 'X5','silver', 2018, 18000)]
                      )
 
-
+#Step 1
 if __name__ == "__main__":
+    #время открытия автосалона с пн-пнц с 09-20
     if is_work_time(car_salon.work):
         CarSalon.open()
     else:

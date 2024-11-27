@@ -5,8 +5,10 @@ from typing import Dict, Union, List
 #время открытия / закрытия автосалона
 #количество автомобилей в салоне 5
 #каждый автомобиль обладает: марка, модель, цвет, год выпуска, цена
-#покупка автомобиля из салона
-#расчет количества лет, месяцев, дней, для оплаты авто (10% от з\п в месяцах)
+
+#HomeWork:
+#TODO: покупка автомобиля из салона
+#TODO: расчет количества лет, месяцев, дней, для оплаты авто (10% от з\п в месяцах)
 
 TODAY = datetime.today()
 DAYS_IN_DIGIT_DICT = {1: 'monday', 2: 'tuesday', 3: 'wednesday', 4: 'thursday', 5: 'friday'}
@@ -19,7 +21,8 @@ def is_work_time(day_time: Dict[str, Union[List[int], List[str]]]) -> bool:
         return True
     else:
         return False
-
+def get_key_by_value(data: Dict[int, str], value: str) -> Union[int, None]:
+    return next((k for k, v in data.items() if v == value), None)
 
 class Car:
     def __init__(self, brand, model, color, year, price):
@@ -31,41 +34,49 @@ class Car:
 
 class CarSalon:
     __instance: 'CarSalon' = None
-    def __init__(self, work: Dict[str, Union[List[str], List[int]]],
-                 car_count: int, car: List[Car]) -> None:
-        self.work: Dict[str, Union[List[str], List[int]]] = work
-        self.car_count: int = car_count
-        self.car: List[Car] = car
+    def __init__(self, work: Dict[str, Union[List[str], List[int]]], cars: List[Car]) -> None:
 
-        self.__post_init__(work)  # Вызов метода __post_init__
+        self.cars: List[Car] = cars
+        self.work: Dict[str, Union[List[str], List[int]]] = work
+        self.car_count: [int] = 0 #исключен из инициализатора и прописано дефолтное значение
+
+        self.__post_init__(work, cars)  # Вызов метода __post_init__
+
+
 
     @staticmethod
-    def get_key_by_value(data: Dict[int, str], value: str) -> Union[int, None]:
-        return next((k for k, v in data.items() if v == value), None)
-
-    def __post_init__(self, work: Dict[str, Union[List[str], List[int]]]) -> None:
+    def string_days_to_int_days(work: Dict[str, Union[List[str], List[int]]]) -> None:
         new_days = []
         for day in work['days']:
             if day in DAYS_IN_DIGIT_DICT.values():
-                key = self.get_key_by_value(DAYS_IN_DIGIT_DICT, day)
+                key = get_key_by_value(DAYS_IN_DIGIT_DICT, day)
                 if key is not None:  # Ensure key is not None
                     new_days.append(key)
-        self.work['days'] = new_days
+        work['days'] = new_days
 
+    def __post_init__(self, work: Dict[str, Union[List[str], List[int]]], cars: List[Car]) -> None:
+        self.string_days_to_int_days(work)
+        self.car_count = len(cars)
 
 
     @classmethod
     def open(cls):
-        print('Добро пожаловать в автосалон Тигран и Ко')
-        print(car_salon.work)
+        print('Добро пожаловать в автосалон Тигран и Ко!')
+        print()
+        print(car_salon.show_cars())
 
 
+    def show_cars(self) -> None:
+        print(f'В салоне есть {self.car_count} машин.')
+        print('Вашему вниманию представлены следующие автомобили:')
+        for car in self.cars:
+            print(f'Марка: {car.brand}, Модель: {car.model}, Цвет: {car.color}, Год выпуска: {car.year}, Цена: {car.price} y.e.')
 
 #создаем экземпляр объекта класса CarSalon
 car_salon = CarSalon(work={'days': ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
                            'time': [9, 20]
                            },
-                     car_count=5, car=[Car('Toyota', 'Camry','red', 2015, 10000),
+                     cars=[Car('Toyota', 'Camry','red', 2015, 10000),
                                        Car('Honda', 'Accord', 'blue', 2017, 15000),
                                        Car('Ford', 'Mustang', 'black', 2016, 12000),
                                        Car('Tesla', 'Model S', 'white', 2019, 20000),
